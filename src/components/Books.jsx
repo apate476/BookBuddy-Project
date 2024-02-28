@@ -27,17 +27,29 @@ function Books() {
   return (
     <main>
       <h2 className="book-header">Book List</h2>
+      <input
+        className="search"
+        type="text"
+        placeholder="Search book title..."
+        value={searchBook}
+        onChange={(e) => setSearchBook(e.target.value)}
+      />
+
       <div className="book-container">
-        {allBooks.map((singleBook) => (
-          <div className="book-card" key={singleBook.id}>
-            <div className="book-page">
+        {allBooks
+          .filter((singleBook) => {
+            return singleBook.title
+              .toLowerCase()
+              .includes(searchBook.toLowerCase());
+          })
+          .map((singleBook) => (
+            <div className="book-card" key={singleBook.id}>
               <h3>Title: {singleBook.title}</h3>
               <h4>Author: {singleBook.author}</h4>
               <img src={singleBook.coverimage} alt={singleBook.title} />
               <Link to={`/books/${singleBook.id}`}>View Details</Link>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </main>
   );
