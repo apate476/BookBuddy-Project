@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -13,16 +15,13 @@ function Login({ setToken }) {
       const response = await axios.post(
         "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/login",
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-        {
           email: email,
           password: password,
         }
       );
+      console.log("token", response.data.token);
       setToken(response.data.token);
+      navigate("/users/account");
     } catch (error) {
       console.error(error);
     }
