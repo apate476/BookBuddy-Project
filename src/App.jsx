@@ -3,6 +3,10 @@ import bookLogo from "./assets/books.png";
 import Books from "./components/Books";
 import { Routes, Route } from "react-router-dom";
 import SingleBook from "./components/SingleBook";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Account from "./components/Account";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -11,12 +15,21 @@ function App() {
     <>
       <h1>
         <img id="logo-image" src={bookLogo} />
-        Library App
+        Book Buddy
       </h1>
 
       <Routes>
         <Route path="/books" element={<Books />} />
         <Route path="/books/:bookId" element={<SingleBook />} />
+        <Route path="/users/login" element={<Login setToken={setToken} />} />
+        <Route
+          path="/users/register"
+          element={<Register setToken={setToken} />}
+        />
+        <ProtectedRoute
+          path="/users/account"
+          element={<Account token={token} />}
+        />
       </Routes>
     </>
   );
