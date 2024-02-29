@@ -225,3 +225,32 @@ body {
 .register-container button:hover {
   background-color: #218838; /* Darker green on hover */
 }
+
+/*   Account.jsx   */
+
+.account-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.account-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.account-container div {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.account-container p {
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}

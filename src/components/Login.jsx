@@ -19,7 +19,7 @@ function Login({ setToken }) {
           password: password,
         }
       );
-      console.log("token", response.data.token);
+      //   console.log("token", response.data.token);
       setToken(response.data.token);
       navigate("/users/account");
     } catch (error) {

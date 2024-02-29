@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function Account() {
+function Account({ token }) {
   const [accountInfo, setAccountInfo] = useState(null);
 
   useEffect(() => {
     async function fetchAccountInfo() {
       try {
-        const token = sessionStorage.getItem("token");
+        // const token = sessionStorage.getItem("token");
 
         if (!token) {
           return;
@@ -23,17 +23,17 @@ function Account() {
             },
           }
         );
-        if (!response.ok) {
-          throw new Error(`Failed to get account info: ${response.statusText}`);
-        }
-        setAccountInfo(response.json.data);
-      } catch (error) {}
+        // console.log(response.data);
+        setAccountInfo(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
     fetchAccountInfo();
-  }, []);
+  }, [token]);
 
   return (
-    <div>
+    <div className="account-container">
       <h2>Account Information</h2>
       {accountInfo ? (
         <div>

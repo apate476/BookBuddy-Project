@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Register({ setToken }) {
   const [firstname, setFirstname] = useState("");
@@ -9,6 +10,7 @@ function Register({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   async function handleRegister() {
     try {
@@ -21,8 +23,9 @@ function Register({ setToken }) {
           password: password,
         }
       );
+      //   console.log(response.data);
       setToken(response.data.token);
-      console.log(response.data);
+      navigate("/users/account");
     } catch (error) {
       console.error(error);
       // Check if the error is due to the email already being registered
