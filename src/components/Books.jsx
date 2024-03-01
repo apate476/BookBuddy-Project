@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function Books() {
+function Books({ token }) {
   const [allBooks, setAllBooks] = useState([]);
   const [searchBook, setSearchBook] = useState("");
 
@@ -21,8 +21,29 @@ function Books() {
         console.error(error);
       }
     }
+
     getBooks();
   }, []);
+
+  async function handleCheckOut(bookId) {
+    try {
+      const response = await axios.patch(
+        `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books/${bookId}`,
+        {
+          available: false,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Checked Out", response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <main>
@@ -48,6 +69,9 @@ function Books() {
               <h4>Author: {singleBook.author}</h4>
               <img src={singleBook.coverimage} alt={singleBook.title} />
               <Link to={`/books/${singleBook.id}`}>View Details</Link>
+              <button onClick={() => handleCheckOut(singleBook.id)}>
+                Check Out
+              </button>
             </div>
           ))}
       </div>

@@ -125,6 +125,19 @@ nav a:hover {
   margin-top: 0.25rem;
 }
 
+.book-card button {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: 2px solid #0056b3;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /*   SingleBook.jsx   */
 
 .book-details-container {
@@ -281,4 +294,20 @@ nav a:hover {
   color: #444;
   line-height: 1.6;
   margin-bottom: 10px;
+}
+
+.account-container button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+}
+
+.account-container button:hover {
+  background-color: #c82333;
 }

@@ -6,7 +6,7 @@ import axios from "axios";
 function Account({ token }) {
   const [accountInfo, setAccountInfo] = useState(null);
   const [reservations, setReservations] = useState([]);
-  console.log(accountInfo);
+
   useEffect(() => {
     async function getAccountInfo() {
       try {
@@ -36,7 +36,7 @@ function Account({ token }) {
         if (!token) {
           return;
         }
-        const { data } = await axios.get(
+        const response = await axios.get(
           "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/",
           {
             headers: {
@@ -45,9 +45,9 @@ function Account({ token }) {
             },
           }
         );
-        // console.log(response.data);
-        let reservations = setReservations(data);
-        console.log(data);
+        console.log(response.data);
+        setReservations(response.data);
+        // console.log(data);
       } catch (error) {
         console.error(error);
       }
@@ -56,6 +56,26 @@ function Account({ token }) {
     getAccountInfo();
     getReservations();
   }, [token]);
+
+  async function handleReturn(bookId) {
+    try {
+      const response = await axios.patch(
+        `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books/${bookId}`,
+        {
+          available: true,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Returned Book", response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="account-container">
@@ -83,6 +103,10 @@ function Account({ token }) {
                   src={reservationInfo.coverimage}
                   alt={reservationInfo.title}
                 />
+                <p>Description: {reservationInfo.description}</p>
+                <button onClick={() => handleReturn(reservationInfo.bookId)}>
+                  Return Book
+                </button>
               </div>;
             })}
           </div>

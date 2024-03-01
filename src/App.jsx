@@ -23,7 +23,7 @@ function App() {
     <>
       <NavBar loggedIn={loggedIn} logout={logout} />
       <Routes>
-        <Route path="/books" element={<Books />} />
+        <Route path="/books" element={<Books token={token} />} />
         <Route path="/books/:bookId" element={<SingleBook />} />
         <Route
           path="/users/login"
