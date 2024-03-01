@@ -25,6 +25,7 @@ function Register({ setToken }) {
       );
       //   console.log(response.data);
       setToken(response.data.token);
+      login();
       navigate("/users/account");
     } catch (error) {
       console.error(error);
