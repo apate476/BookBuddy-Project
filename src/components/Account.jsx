@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Reservation from "./Reservations";
 
 function Account({ token }) {
   const [accountInfo, setAccountInfo] = useState(null);
-  const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
     async function getAccountInfo() {
       try {
-        // const token = sessionStorage.getItem("token");
-
         if (!token) {
           return;
         }
@@ -31,51 +29,8 @@ function Account({ token }) {
       }
     }
 
-    async function getReservations() {
-      try {
-        if (!token) {
-          return;
-        }
-        const response = await axios.get(
-          "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(response.data);
-        setReservations(response.data);
-        // console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
     getAccountInfo();
-    getReservations();
   }, [token]);
-
-  async function handleReturn(bookId) {
-    try {
-      const response = await axios.patch(
-        `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books/${bookId}`,
-        {
-          available: true,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Returned Book", response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   return (
     <div className="account-container">
@@ -91,29 +46,7 @@ function Account({ token }) {
       ) : (
         <p>Loading user information...</p>
       )}
-      {reservations.length > 0 ? (
-        <div>
-          <h3>Reservations</h3>
-          <div>
-            {reservations.map((reservationInfo) => {
-              <div key={reservationInfo.id}>
-                <h4>Title: {reservationInfo.title}</h4>
-                <h5>Author: {reservationInfo.author}</h5>
-                <img
-                  src={reservationInfo.coverimage}
-                  alt={reservationInfo.title}
-                />
-                <p>Description: {reservationInfo.description}</p>
-                <button onClick={() => handleReturn(reservationInfo.bookId)}>
-                  Return Book
-                </button>
-              </div>;
-            })}
-          </div>
-        </div>
-      ) : (
-        <p>You don't have any books checked out.</p>
-      )}
+      <Reservation />
     </div>
   );
 }
