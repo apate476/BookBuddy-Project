@@ -5,9 +5,10 @@ import axios from "axios";
 
 function Account({ token }) {
   const [accountInfo, setAccountInfo] = useState(null);
-
+  const [reservations, setReservations] = useState([]);
+  console.log(accountInfo);
   useEffect(() => {
-    async function fetchAccountInfo() {
+    async function getAccountInfo() {
       try {
         // const token = sessionStorage.getItem("token");
 
@@ -29,7 +30,31 @@ function Account({ token }) {
         console.error(error);
       }
     }
-    fetchAccountInfo();
+
+    async function getReservations() {
+      try {
+        if (!token) {
+          return;
+        }
+        const { data } = await axios.get(
+          "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // console.log(response.data);
+        let reservations = setReservations(data);
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getAccountInfo();
+    getReservations();
   }, [token]);
 
   return (
@@ -45,6 +70,25 @@ function Account({ token }) {
         </div>
       ) : (
         <p>Loading user information...</p>
+      )}
+      {reservations.length > 0 ? (
+        <div>
+          <h3>Reservations</h3>
+          <div>
+            {reservations.map((reservationInfo) => {
+              <div key={reservationInfo.id}>
+                <h4>Title: {reservationInfo.title}</h4>
+                <h5>Author: {reservationInfo.author}</h5>
+                <img
+                  src={reservationInfo.coverimage}
+                  alt={reservationInfo.title}
+                />
+              </div>;
+            })}
+          </div>
+        </div>
+      ) : (
+        <p>You don't have any books checked out.</p>
       )}
     </div>
   );

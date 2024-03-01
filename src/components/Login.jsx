@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function Login({ setToken }) {
+function Login({ setToken, login }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ function Login({ setToken }) {
       );
       //   console.log("token", response.data.token);
       setToken(response.data.token);
+      login();
       navigate("/users/account");
     } catch (error) {
       console.error(error);

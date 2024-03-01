@@ -1,32 +1,42 @@
 import { useState } from "react";
-import bookLogo from "./assets/books.png";
 import Books from "./components/Books";
 import { Routes, Route } from "react-router-dom";
 import SingleBook from "./components/SingleBook";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Account from "./components/Account";
-// import PrivateRoute from "./components/PrivateRoute";
+import NavBar from "./components/Navigations";
 
 function App() {
   const [token, setToken] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  function login() {
+    setLoggedIn(true);
+  }
+
+  function logout() {
+    setLoggedIn(false);
+  }
 
   return (
     <>
-      <h1>
-        <img id="logo-image" src={bookLogo} />
-        Book Buddy
-      </h1>
-
+      <NavBar loggedIn={loggedIn} logout={logout} />
       <Routes>
         <Route path="/books" element={<Books />} />
         <Route path="/books/:bookId" element={<SingleBook />} />
-        <Route path="/users/login" element={<Login setToken={setToken} />} />
+        <Route
+          path="/users/login"
+          element={<Login setToken={setToken} login={login} />}
+        />
         <Route
           path="/users/register"
           element={<Register setToken={setToken} />}
         />
-        <Route path="/users/account" element={<Account token={token} />} />
+        <Route
+          path="/users/account"
+          element={<Account token={token} loggedIn={loggedIn} />}
+        />
       </Routes>
     </>
   );
