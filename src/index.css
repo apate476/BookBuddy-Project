@@ -270,35 +270,47 @@ nav a:hover {
 /*   Account.jsx   */
 
 .account-container {
-  max-width: 400px;
-  margin: 150px auto;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 30px;
   padding: 20px;
+  background-color: #f8f8f8;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .account-container h2 {
-  text-align: center;
-  color: #333;
   margin-bottom: 20px;
 }
 
-.account-container div {
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #f8f9fa;
-}
-
 .account-container p {
-  color: #444;
-  line-height: 1.6;
   margin-bottom: 10px;
 }
 
-/*   Reservations.jsx   */
+.reservations-container {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.reservations-container h3 {
+  margin-bottom: 10px;
+}
+
+.reservations-container div {
+  margin-bottom: 20px;
+}
+
+.reservations-container img {
+  width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
 
 .none {
-  text-align: center;
-  color: #010000;
+  color: #666;
+}
+
+.error {
+  color: red;
 }

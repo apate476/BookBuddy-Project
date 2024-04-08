@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Reservation from "./Reservations";
+// import Reservation from "./Reservation";
 
 function Account({ token }) {
   const [accountInfo, setAccountInfo] = useState(null);
+  const [reservations, setReservations] = useState([]);
+  const [bookCount, setBookCount] = useState(0);
 
   useEffect(() => {
     async function getAccountInfo() {
@@ -17,13 +19,13 @@ function Account({ token }) {
           "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/me",
           {
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        // console.log(response.data);
+
         setAccountInfo(response.data);
+        setBookCount(response.data.books.length);
       } catch (error) {
         console.error(error);
       }
@@ -32,21 +34,86 @@ function Account({ token }) {
     getAccountInfo();
   }, [token]);
 
+  async function getReservations() {
+    try {
+      const response = await axios.get(
+        "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // console.log(response.data);
+      setReservations(response.data.reservation);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getReservations();
+  }, [token]);
+
+  async function handleReturn(reservationId) {
+    try {
+      const response = await axios.delete(
+        `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/${reservationId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("Returned Book", response.data);
+
+      updateBookCount(bookCount - 1);
+      getReservations();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const updateBookCount = (newCount) => {
+    setBookCount(newCount);
+  };
+
   return (
     <div className="account-container">
       <h2>Account Information</h2>
-      {accountInfo ? (
+      {!token ? (
+        <p>
+          Please log in or create an account to view your account information.
+        </p>
+      ) : accountInfo ? (
         <div>
           <p>ID: {accountInfo.id}</p>
           <p>First Name: {accountInfo.firstname}</p>
           <p>Last Name: {accountInfo.lastname}</p>
           <p>Email: {accountInfo.email}</p>
-          <p>Books: {accountInfo.books.length}</p>
+          <p>Books: {bookCount}</p>
+          <div>
+            {reservations.length > 0 ? (
+              <div className="reservations-container">
+                <h2>Reservations</h2>
+                <div>
+                  {reservations.map((accountDetail) => {
+                    return (
+                      <div key={accountDetail.id}>
+                        <h4>Title: {accountDetail.title}</h4>
+                        <h5>Author: {accountDetail.author}</h5>
+                        <img
+                          src={accountDetail.coverimage}
+                          alt={accountDetail.title}
+                        />
+                        <p>Description: {accountDetail.description}</p>
+                        <button onClick={() => handleReturn(accountDetail.id)}>
+                          Return Book
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <p className="none">You don't have any books checked out.</p>
+            )}
+          </div>
         </div>
       ) : (
         <p>Loading user information...</p>
       )}
-      <Reservation />
     </div>
   );
 }

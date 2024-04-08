@@ -23,6 +23,7 @@ function App() {
     <>
       <NavBar loggedIn={loggedIn} logout={logout} />
       <Routes>
+        <Route path="/" element={<Books token={token} />} />
         <Route path="/books" element={<Books token={token} />} />
         <Route path="/books/:bookId" element={<SingleBook />} />
         <Route
@@ -31,7 +32,7 @@ function App() {
         />
         <Route
           path="/users/register"
-          element={<Register setToken={setToken} />}
+          element={<Register setToken={setToken} login={login} />}
         />
         <Route
           path="/users/account"

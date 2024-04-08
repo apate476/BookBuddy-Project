@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function Register({ setToken }) {
+function Register({ setToken, login }) {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -25,6 +25,7 @@ function Register({ setToken }) {
       );
       //   console.log(response.data);
       setToken(response.data.token);
+      login();
       navigate("/users/account");
     } catch (error) {
       console.error(error);
